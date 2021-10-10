@@ -3,3 +3,4 @@ Assignment Question/examples/.idea/
 unique-combination-results.csv
 
 /vendor/
+.phpunit.result.cache
