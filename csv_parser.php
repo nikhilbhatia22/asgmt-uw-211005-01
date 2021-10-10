@@ -1,5 +1,16 @@
 <?php
 
+global $mappingAndSequence_ofHeadings;
+$mappingAndSequence_ofHeadings = [
+    'brand_name' => 'make',
+    'model_name' => 'model',
+    'colour_name' => 'colour',
+    'gb_spec_name' => 'capacity',
+    'network_name' => 'network',
+    'grade_name' => 'grade',
+    'condition_name' => 'condition',
+];
+
 /**
  * Parses any CSV based file.
  * @param $inputFile
@@ -31,7 +42,8 @@ function parseCSV($inputFile, $uniqueCombinationFile, $bailValidation, $printObj
 
         if($line == $headingsString)    continue;       //If a same heading line comes across, then skipping.
 
-        $associativeRowData = array_combine($headingsAsArr, $parsedCsvRow);
+        $associativeRowData = array_combine($headingsAsArr, $parsedCsvRow);     //Initial - with CSV Headings
+        $associativeRowData = mapObjectProperties($associativeRowData);     //Mapped with properties.
 
         if(!validateRow($associativeRowData, $lineNo, $bailValidation))      continue;   //Skipping if the validation of any row fails.
 
@@ -39,15 +51,7 @@ function parseCSV($inputFile, $uniqueCombinationFile, $bailValidation, $printObj
 
         if(! isset($indexedData[$line])){
             $indexedData[$line] = $uniqueArrIndex;
-            $uniqueArr[$uniqueArrIndex] = [
-                $associativeRowData['brand_name'],
-                $associativeRowData['model_name'],
-                $associativeRowData['colour_name'],
-                $associativeRowData['gb_spec_name'],
-                $associativeRowData['network_name'],
-                $associativeRowData['grade_name'],
-                $associativeRowData['condition_name'],
-            ];
+            $uniqueArr[$uniqueArrIndex] = sequentializeValues($associativeRowData);
             $uniqueArr[$uniqueArrIndex][$totalColumnsInAFile+1] = 0;
             $uniqueArrIndex++;
         }
@@ -77,4 +81,33 @@ function getDelimiter($file){
         case 'csv':
         default:    return ',';
     }
+}
+
+/**
+ * Maps parsed records with required object properties.
+ * @param $associativeParsedRecord
+ * @return array
+ */
+function mapObjectProperties($associativeParsedRecord){
+    global $mappingAndSequence_ofHeadings;
+    $mapped = [];
+    foreach ($associativeParsedRecord as $key => $value)
+    {
+        $mapped[$mappingAndSequence_ofHeadings[$key]] = $value;
+    }
+    return $mapped;
+}
+
+/**
+ * Puts the values in required sequence for final unique combination file.
+ * @param $product
+ * @return array
+ */
+function sequentializeValues($product){
+    global $mappingAndSequence_ofHeadings;
+    $sequentialized = [];
+    foreach ($mappingAndSequence_ofHeadings as $mappingAndSequence_ofHeading) {
+        $sequentialized[] = $product[$mappingAndSequence_ofHeading];
+    }
+    return $sequentialized;
 }
