@@ -13,68 +13,80 @@ $uniqueCombinationFile = $inputs['unique-combination'] ?? 'unique-combination-re
 if(empty($inputFile))  throw new InvalidArgumentException("The option --file is required to execute this file.");
 if(!file_exists($inputFile))   throw new InvalidArgumentException("The specified file \"" .$inputFile. "\" is not found.");
 
-$fp = fopen($inputFile, "r+");
-
-$indexedData = [];
-$uniqueArr = [];
-$uniqueArrIndex = 0;
-$lineNo = 0;
-$totalColumnsInAFile = 0;
-$headingsString = '';
-$headingsAsArr = [];
-
-while (($line = stream_get_line($fp, 1024 * 1024, "\n")) !== false) {
-    $lineNo++;      //Incrementing Line
-    $parsedCsvRow = str_getcsv($line);
-    if($lineNo == 1){
-        $headingsString = $line;
-        $headingsAsArr = $parsedCsvRow;
-        $totalColumnsInAFile = count($parsedCsvRow);
-        continue;
-    }
-
-    if($line == $headingsString)    continue;       //If a same heading line comes across, then skipping.
-
-    $associativeRowData = array_combine($headingsAsArr, $parsedCsvRow);
-
-    if(!validateRow($associativeRowData, $lineNo))      continue;
-
-    if(! isset($indexedData[$line])){
-        $indexedData[$line] = $uniqueArrIndex;
-        $uniqueArr[$uniqueArrIndex] = [
-            $associativeRowData['brand_name'],
-            $associativeRowData['model_name'],
-            $associativeRowData['colour_name'],
-            $associativeRowData['gb_spec_name'],
-            $associativeRowData['network_name'],
-            $associativeRowData['grade_name'],
-            $associativeRowData['condition_name'],
-        ];
-        $uniqueArr[$uniqueArrIndex][$totalColumnsInAFile+1] = 0;
-        $uniqueArrIndex++;
-    }
-    $uniqueArr[$indexedData[$line]][$totalColumnsInAFile+1]++;
+switch (pathinfo($inputFile, PATHINFO_EXTENSION)) {
+    case 'json': echo "Parsing for JSON is planned and shall be done soon."; break; exit;
+    case 'XML': echo "Parsing for XML is planned and shall be done soon."; break; exit;
+    case 'tsv':
+    case 'csv':
+    default:
+        parseCSV($inputFile, $uniqueCombinationFile);
+        break;
 }
-fclose($fp);
-
-
-// Open a file in write mode ('w')
-$fp_unique_comb = fopen($uniqueCombinationFile, 'w');
-
-
-//Inserting heading
-fwrite($fp_unique_comb, 'make,model,colour,capacity,network,grade,condition,count' . PHP_EOL);
-
-// Loop through file pointer and a line
-foreach ($uniqueArr as $fields) {
-    fputcsv($fp_unique_comb, $fields);
-}
-
-fclose($fp_unique_comb);
 
 $script_end_time = microtime(true);
 echo "The results were successfully parsed into $uniqueCombinationFile in " . round(($script_end_time - $script_start_time), 2) . ' seconds';
 
+
+function parseCSV($inputFile, $uniqueCombinationFile){
+    $fp = fopen($inputFile, "r+");
+
+    $indexedData = [];
+    $uniqueArr = [];
+    $uniqueArrIndex = 0;
+    $lineNo = 0;
+    $totalColumnsInAFile = 0;
+    $headingsString = '';
+    $headingsAsArr = [];
+
+    while (($line = stream_get_line($fp, 1024 * 1024, "\n")) !== false) {
+        $lineNo++;      //Incrementing Line
+        $parsedCsvRow = str_getcsv($line, getDelimiter($inputFile));
+        if($lineNo == 1){
+            $headingsString = $line;
+            $headingsAsArr = $parsedCsvRow;
+            $totalColumnsInAFile = count($parsedCsvRow);
+            continue;
+        }
+
+        if($line == $headingsString)    continue;       //If a same heading line comes across, then skipping.
+
+        $associativeRowData = array_combine($headingsAsArr, $parsedCsvRow);
+
+        if(!validateRow($associativeRowData, $lineNo))      continue;
+
+        if(! isset($indexedData[$line])){
+            $indexedData[$line] = $uniqueArrIndex;
+            $uniqueArr[$uniqueArrIndex] = [
+                $associativeRowData['brand_name'],
+                $associativeRowData['model_name'],
+                $associativeRowData['colour_name'],
+                $associativeRowData['gb_spec_name'],
+                $associativeRowData['network_name'],
+                $associativeRowData['grade_name'],
+                $associativeRowData['condition_name'],
+            ];
+            $uniqueArr[$uniqueArrIndex][$totalColumnsInAFile+1] = 0;
+            $uniqueArrIndex++;
+        }
+        $uniqueArr[$indexedData[$line]][$totalColumnsInAFile+1]++;
+    }
+    fclose($fp);
+
+
+    // Open a file in write mode ('w')
+    $fp_unique_comb = fopen($uniqueCombinationFile, 'w');
+
+
+    //Inserting heading
+    fwrite($fp_unique_comb, 'make,model,colour,capacity,network,grade,condition,count' . PHP_EOL);
+
+    // Loop through file pointer and a line
+    foreach ($uniqueArr as $fields) {
+        fputcsv($fp_unique_comb, $fields);
+    }
+
+    fclose($fp_unique_comb);
+}
 
 /**
  * Validates the given row data
@@ -132,4 +144,17 @@ function validateRequired($value){
 function validateString($value)
 {
     return is_string($value);
+}
+
+/**
+ * Returns delimiter based on file path.
+ * @param $file
+ * @return string
+ */
+function getDelimiter($file){
+    switch (pathinfo($file, PATHINFO_EXTENSION)) {
+        case 'tsv': return "\t";
+        case 'csv':
+        default:    return ',';
+    }
 }
