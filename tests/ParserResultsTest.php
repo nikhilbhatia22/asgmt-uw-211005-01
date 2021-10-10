@@ -48,6 +48,17 @@ class ParserResultsTest extends \PHPUnit\Framework\TestCase {
     }
 
     /**
+     * Tests results of Other-format file's parsing.
+     * @throws Exception
+     */
+    public function testOtherFormatParsing() {
+        $response = \App\Parser::execute('tests\test_products_txt.txt');
+
+        self::assertEquals('File format is incorrect.', $response);
+        self::assertFileDoesNotExist('tests\unique-combination-results-xml.csv');
+    }
+
+    /**
      * Returns a CSV in 2D Array.
      * @param $filePath
      * @param $delimiter
