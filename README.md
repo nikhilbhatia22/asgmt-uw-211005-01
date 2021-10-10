@@ -10,7 +10,9 @@ This is an assignment whereby a CSV parser has been created for a given assignme
 | memory.php | This is just a helper sub file which has some helper memory related functions. |
 
 ## How to(s)
-The script in the simplest form can be executed with following command,
+To execute this project, one needs to install composer first by `composer install` command. 
+
+Once the composer is installed, the script in the simplest form can be executed with following command,
 
 `php assignment.php --file path\to\the\file`
 
