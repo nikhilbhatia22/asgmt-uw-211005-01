@@ -1,4 +1,4 @@
-# Assignment
+# CSV Parser Assignment
 This is an assignment whereby a CSV parser has been created that generates a unique combination count for a given assignment-question placed in the directory with the same name.
 
 ## File Definitions
