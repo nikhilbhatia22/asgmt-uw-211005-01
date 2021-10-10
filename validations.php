@@ -1,5 +1,20 @@
 <?php
 
+global $rules, $messages;
+$rules = [
+    'make' => 'required|string',
+    'model' => 'required|string',
+    'colour' => 'string',
+    'capacity' => 'string',
+    'network' => 'string',
+    'grade' => 'string',
+    'condition' => 'string',
+];
+$messages = [
+    'required' => '%attribute% is required.',
+    'string' => '%attribute% should be a valid string.',
+];
+
 /**
  * Validates the given row data
  * @param $rowData
@@ -9,19 +24,7 @@
  * @throws Exception
  */
 function validateRow($rowData, $lineNo, $bailValidation){
-    $rules = [
-        'brand_name' => 'required|string',
-        'model_name' => 'required|string',
-        'colour_name' => 'string',
-        'gb_spec_name' => 'string',
-        'network_name' => 'string',
-        'grade_name' => 'string',
-        'condition_name' => 'string',
-    ];
-    $messages = [
-        'required' => '%attribute% is required.',
-        'string' => '%attribute% should be a valid string.',
-    ];
+    global $rules, $messages;
 
     foreach ($rowData as $key => $rowDatum) {
         if(empty($key))     continue;
