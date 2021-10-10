@@ -36,7 +36,7 @@ class Validations {
                 $validator = 'validate' . ucfirst($rule);
                 if(!self::$validator($rowDatum)){
                     if($bailValidation)
-                        throw new RuntimeException("At line #$lineNo, " . str_replace('%attribute%', $key, self::$messages[$rule]) . "\n");
+                        throw new \RuntimeException("At line #$lineNo, " . str_replace('%attribute%', $key, self::$messages[$rule]) . "\n");
                     else
                         echo "At line #$lineNo, " . str_replace('%attribute%', $key, self::$messages[$rule]) . "\n";
                     return false;
