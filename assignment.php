@@ -4,9 +4,7 @@
  * 1. The input file's heading column count and data column count should be same.
  */
 
-require_once('memory.php');
-require_once('csv_parser.php');
-require_once('validations.php');
+require ('vendor/autoload.php');
 
 $script_start_time = microtime(true);
 
@@ -25,7 +23,7 @@ if(!file_exists($inputFile))   throw new InvalidArgumentException("The specified
 
 //Main Script Execution.
 try {
-    execute($inputFile, $uniqueCombinationFile, $bailValidation, $printObjects);
+    App\Parser::execute($inputFile, $uniqueCombinationFile, $bailValidation, $printObjects);
 } catch (Exception $e) {
     echo "Some exception $e was raised";
 }
@@ -33,24 +31,5 @@ try {
 
 $script_end_time = microtime(true);
 echo "The results were successfully parsed into $uniqueCombinationFile in "
-    . round(($script_end_time - $script_start_time), 2) . ' seconds with peak memory usage of ' . formatBytes(memory_get_peak_usage());
-
-/**
- * Executes the parser.
- * @param $inputFile
- * @param $uniqueCombinationFile
- * @param $bailValidation
- * @param $printObjects
- * @throws Exception
- */
-function execute($inputFile, $uniqueCombinationFile, $bailValidation, $printObjects){
-    switch (pathinfo($inputFile, PATHINFO_EXTENSION)) {
-        case 'json': echo "Parsing for JSON is planned and shall be done soon."; exit; break;
-        case 'XML': echo "Parsing for XML is planned and shall be done soon."; exit; break;
-        case 'tsv':
-        case 'csv':
-        default:
-            parseCSV($inputFile, $uniqueCombinationFile, $bailValidation, $printObjects);
-            break;
-    }
-}
+    . round(($script_end_time - $script_start_time), 2) . ' seconds with peak memory usage of '
+    . \App\Memory::formatBytes(memory_get_peak_usage());

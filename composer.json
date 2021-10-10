@@ -1,0 +1,19 @@
+{
+    "name": "nikhilbhatia22/asgmt-uw-211005-01",
+    "description": "A CSV Parser to generate unique combination",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nikhil Bhatia",
+            "email": "nikhil@codiksh.in"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
