@@ -4,7 +4,7 @@
  * 1. The input file's heading column count and data column count should be same.
  */
 
-require_once('parser.php');
+require_once('csv_parser.php');
 require_once('validations.php');
 
 $script_start_time = microtime(true);
