@@ -5,14 +5,19 @@
  */
 
 $script_start_time = microtime(true);
-$inputs = getopt(null,['file:', 'unique-combination::']);
 
+//Input Collection
+$inputs = getopt(null,['file:', 'unique-combination::']);
 $inputFile = $inputs['file'];
 $uniqueCombinationFile = $inputs['unique-combination'] ?? 'unique-combination-results.csv';
 
+
+//Few Argument Validations
 if(empty($inputFile))  throw new InvalidArgumentException("The option --file is required to execute this file.");
 if(!file_exists($inputFile))   throw new InvalidArgumentException("The specified file \"" .$inputFile. "\" is not found.");
 
+
+//Main Script Execution.
 switch (pathinfo($inputFile, PATHINFO_EXTENSION)) {
     case 'json': echo "Parsing for JSON is planned and shall be done soon."; break; exit;
     case 'XML': echo "Parsing for XML is planned and shall be done soon."; break; exit;
@@ -23,12 +28,30 @@ switch (pathinfo($inputFile, PATHINFO_EXTENSION)) {
         break;
 }
 
+
 $script_end_time = microtime(true);
 echo "The results were successfully parsed into $uniqueCombinationFile in " . round(($script_end_time - $script_start_time), 2) . ' seconds';
 
 
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Parses any CSV based file.
+ * @param $inputFile
+ * @param $uniqueCombinationFile
+ * @throws Exception
+ */
 function parseCSV($inputFile, $uniqueCombinationFile){
-    $fp = fopen($inputFile, "r+");
+    $fp = fopen($inputFile, "r+");      //Opening the input file.
 
     $indexedData = [];
     $uniqueArr = [];
@@ -52,7 +75,7 @@ function parseCSV($inputFile, $uniqueCombinationFile){
 
         $associativeRowData = array_combine($headingsAsArr, $parsedCsvRow);
 
-        if(!validateRow($associativeRowData, $lineNo))      continue;
+        if(!validateRow($associativeRowData, $lineNo))      continue;   //Skipping if the validation of any row fails.
 
         if(! isset($indexedData[$line])){
             $indexedData[$line] = $uniqueArrIndex;
@@ -70,21 +93,15 @@ function parseCSV($inputFile, $uniqueCombinationFile){
         }
         $uniqueArr[$indexedData[$line]][$totalColumnsInAFile+1]++;
     }
-    fclose($fp);
 
+    fclose($fp);    //Closing the input file.
 
-    // Open a file in write mode ('w')
+    //Writing the final results.
     $fp_unique_comb = fopen($uniqueCombinationFile, 'w');
-
-
-    //Inserting heading
     fwrite($fp_unique_comb, 'make,model,colour,capacity,network,grade,condition,count' . PHP_EOL);
-
-    // Loop through file pointer and a line
     foreach ($uniqueArr as $fields) {
         fputcsv($fp_unique_comb, $fields);
     }
-
     fclose($fp_unique_comb);
 }
 
@@ -93,6 +110,7 @@ function parseCSV($inputFile, $uniqueCombinationFile){
  * @param $rowData
  * @param $lineNo
  * @return bool
+ * @throws Exception
  */
 function validateRow($rowData, $lineNo){
     $rules = [
