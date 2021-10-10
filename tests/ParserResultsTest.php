@@ -29,7 +29,7 @@ class ParserResultsTest extends \PHPUnit\Framework\TestCase {
      * Tests results of JSON file's parsing.
      * @throws Exception
      */
-    public function testJsonParsing() {
+    public function testJsonParsingReturnsComingSoonMessage() {
         $response = \App\Parser::execute('tests\test_products_json.json');
 
         self::assertEquals('Parsing for JSON is planned and shall be done soon.', $response);
@@ -40,7 +40,7 @@ class ParserResultsTest extends \PHPUnit\Framework\TestCase {
      * Tests results of XML file's parsing.
      * @throws Exception
      */
-    public function testXmlParsing() {
+    public function testXmlParsingReturnsComingSoonMessage() {
         $response = \App\Parser::execute('tests\test_products_xml.xml');
 
         self::assertEquals('Parsing for XML is planned and shall be done soon.', $response);
@@ -51,7 +51,7 @@ class ParserResultsTest extends \PHPUnit\Framework\TestCase {
      * Tests results of Other-format file's parsing.
      * @throws Exception
      */
-    public function testOtherFormatParsing() {
+    public function testOtherFormatParsingReturnsIncorrectFileFormatMessage() {
         $response = \App\Parser::execute('tests\test_products_txt.txt');
 
         self::assertEquals('File format is incorrect.', $response);
