@@ -1,4 +1,4 @@
-1. Integrate time taken to execute the script
+1. ~~Integrate time taken to execute the script~~
 2. Check for file headings can be changed matter, as currently statically columns have been mentioned to maintain the sequence.
 3. Integrate support for multiple formats. Integrate switch cases. Auto select the case based on file extension.
 4. Write down a readme file.

@@ -4,6 +4,7 @@
  * 1. The input file's heading column count and data column count should be same.
  */
 
+$script_start_time = microtime(true);
 $inputs = getopt(null,['file:', 'unique-combination::']);
 
 $inputFile = $inputs['file'];
@@ -70,6 +71,9 @@ foreach ($uniqueArr as $fields) {
 }
 
 fclose($fp_unique_comb);
+
+$script_end_time = microtime(true);
+echo "The results were successfully parsed into $uniqueCombinationFile in " . round(($script_end_time - $script_start_time), 2) . ' seconds';
 
 
 /**
