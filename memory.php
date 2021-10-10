@@ -4,7 +4,7 @@
  * Prints Memory usages.
  */
 function printMemoryUsage(){
-    echo "\n Current Peak Memory usage is: " . formatBytes(memory_get_peak_usage()) . " and Memory usage is " . formatBytes(memory_get_usage());
+    echo "\n Current Peak Memory usage is: " . formatBytes(memory_get_peak_usage()) . " and Current Memory usage is " . formatBytes(memory_get_usage()) . "\n";
 }
 
 /**
