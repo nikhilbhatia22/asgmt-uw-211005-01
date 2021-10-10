@@ -72,6 +72,7 @@ class CsvParser {
             fputcsv($fp_unique_comb, $fields);
         }
         fclose($fp_unique_comb);
+        return "The results have successfully been written in $uniqueCombinationFile";
     }
 
 

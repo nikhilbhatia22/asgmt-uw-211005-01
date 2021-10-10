@@ -19,13 +19,13 @@ if(!file_exists($inputFile))   throw new InvalidArgumentException("The specified
 
 //Main Script Execution.
 try {
-    App\Parser::execute($inputFile, $uniqueCombinationFile, $bailValidation, $printObjects);
+    echo App\Parser::execute($inputFile, $uniqueCombinationFile, $bailValidation, $printObjects);
 } catch (Exception $e) {
     echo "Some exception $e was raised";
 }
 
 
 $script_end_time = microtime(true);
-echo "The results were successfully parsed into $uniqueCombinationFile in "
+echo "\n\nThe parser executed successfully in "
     . round(($script_end_time - $script_start_time), 2) . ' seconds with peak memory usage of '
     . \App\Memory::formatBytes(memory_get_peak_usage());
