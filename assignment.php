@@ -4,6 +4,7 @@
  * 1. The input file's heading column count and data column count should be same.
  */
 
+require_once('memory.php');
 require_once('csv_parser.php');
 require_once('validations.php');
 
@@ -31,7 +32,8 @@ try {
 
 
 $script_end_time = microtime(true);
-echo "The results were successfully parsed into $uniqueCombinationFile in " . round(($script_end_time - $script_start_time), 2) . ' seconds';
+echo "The results were successfully parsed into $uniqueCombinationFile in "
+    . round(($script_end_time - $script_start_time), 2) . ' seconds with peak memory usage of ' . formatBytes(memory_get_peak_usage());
 
 /**
  * Executes the parser.
