@@ -1,8 +1,4 @@
 <?php
-/**
- * CONDITIONS
- * 1. The input file's heading column count and data column count should be same.
- */
 
 require ('vendor/autoload.php');
 
