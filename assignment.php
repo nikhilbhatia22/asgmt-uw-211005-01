@@ -4,12 +4,15 @@
  * 1. The input file's heading column count and data column count should be same.
  */
 
+$inputs = getopt(null,['file:', 'unique-combination::']);
 
-//$inputs = getopt(null,['file:', 'unique-combination::']);
+$inputFile = $inputs['file'];
+$uniqueCombinationFile = $inputs['unique-combination'] ?? 'unique-combination-results.csv';
 
-$directory = 'E:\wamp64\www\Codiksh-Code\Upwork Interview\interview-project-1-master-6cbb7fd58dfcffa7ddc4cb2181bab74be166e50f\examples';
-$fp = fopen("$directory\products_comma_separated_edited.csv", "r+");
+if(empty($inputFile))  throw new InvalidArgumentException("The option --file is required to execute this file.");
+if(!file_exists($inputFile))   throw new InvalidArgumentException("The specified file \"" .$inputFile. "\" is not found.");
 
+$fp = fopen($inputFile, "r+");
 
 $indexedData = [];
 $uniqueArr = [];
@@ -55,7 +58,7 @@ fclose($fp);
 
 
 // Open a file in write mode ('w')
-$fp_unique_comb = fopen("$directory\unique_comb_edited.csv", 'w');
+$fp_unique_comb = fopen($uniqueCombinationFile, 'w');
 
 
 //Inserting heading
