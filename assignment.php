@@ -7,10 +7,11 @@
 $script_start_time = microtime(true);
 
 //Input Collection
-$inputs = getopt(null,['file:', 'unique-combination::', 'dont-bail']);
+$inputs = getopt(null,['file:', 'unique-combination::', 'dont-bail', 'print-objects']);
 $inputFile = $inputs['file'];
 $uniqueCombinationFile = $inputs['unique-combination'] ?? 'unique-combination-results.csv';
 $bailValidation = isset($inputs['dont-bail']) ? false : true;
+$printObjects = isset($inputs['print-objects']);
 
 
 //Few Argument Validations
@@ -25,7 +26,7 @@ switch (pathinfo($inputFile, PATHINFO_EXTENSION)) {
     case 'tsv':
     case 'csv':
     default:
-        parseCSV($inputFile, $uniqueCombinationFile, $bailValidation);
+        parseCSV($inputFile, $uniqueCombinationFile, $bailValidation, $printObjects);
         break;
 }
 
@@ -50,9 +51,10 @@ echo "The results were successfully parsed into $uniqueCombinationFile in " . ro
  * @param $inputFile
  * @param $uniqueCombinationFile
  * @param $bailValidation
+ * @param $printObjects
  * @throws Exception
  */
-function parseCSV($inputFile, $uniqueCombinationFile, $bailValidation){
+function parseCSV($inputFile, $uniqueCombinationFile, $bailValidation, $printObjects){
     $fp = fopen($inputFile, "r+");      //Opening the input file.
 
     $indexedData = [];
@@ -78,6 +80,8 @@ function parseCSV($inputFile, $uniqueCombinationFile, $bailValidation){
         $associativeRowData = array_combine($headingsAsArr, $parsedCsvRow);
 
         if(!validateRow($associativeRowData, $lineNo, $bailValidation))      continue;   //Skipping if the validation of any row fails.
+
+        if($printObjects)   print_r($associativeRowData);       //Prints validated product objects, if valid arg flag is provided.
 
         if(! isset($indexedData[$line])){
             $indexedData[$line] = $uniqueArrIndex;
