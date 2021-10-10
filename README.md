@@ -1,13 +1,14 @@
 # Assignment
-This is an assignment whereby a CSV parser has been created for a given assignment-question placed in the directory with the same name.
+This is an assignment whereby a CSV parser has been created that generates a unique combination count for a given assignment-question placed in the directory with the same name.
 
 ## File Definitions
-| File   |      Remarks      |
+| File\Classes   |      Remarks      |
 |----------|-------------|
 | assignment.php |  This is the main file, from where the parser can be executed. |
-| csv_parser.php | This is the sub file, to execute the CSV based parsers with different delimiters. |
-| validations.php | This is sub file which contains various validations for the input file. |
-| memory.php | This is just a helper sub file which has some helper memory related functions. |
+| App\Parser.php | This is the sub class file, to initialize the parser execution across multiple formats. |
+| App\CsvParser.php | This is the sub class file, to execute the CSV based parsers with different delimiters. |
+| App\Validations.php | This is sub file which contains various validations for the input file. |
+| App\Memory.php | This is just a helper sub file which has some helper memory related functions. |
 
 ## How to(s)
 To execute this project, one needs to install composer first by `composer install` command. 
@@ -34,3 +35,4 @@ However, the script has a **number of customizations**, which are as follows:
 4. Since, the headings in the input file can be changed in the future, it is required the same should be updated in the mapping provided in a file `csv_parser.php` with variable `$mappingAndSequence_ofHeadings`, so that the headings can be easily mapped with required properties of the product.
 5. The **validation rules are customizable** by modifying the array `$rules` in a file `validations.php`.
 6. The **validation messages are customizable** by modifying the array `$messages` in a file `validations.php`.
+7. The tests can be run by `vendor\bin\phpunit --testdox`.
