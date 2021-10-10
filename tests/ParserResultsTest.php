@@ -26,6 +26,28 @@ class ParserResultsTest extends \PHPUnit\Framework\TestCase {
     }
 
     /**
+     * Tests results of JSON file's parsing.
+     * @throws Exception
+     */
+    public function testJsonParsing() {
+        $response = \App\Parser::execute('tests\test_products_json.json');
+
+        self::assertEquals('Parsing for JSON is planned and shall be done soon.', $response);
+        self::assertFileDoesNotExist('tests\unique-combination-results-json.csv');
+    }
+
+    /**
+     * Tests results of XML file's parsing.
+     * @throws Exception
+     */
+    public function testXmlParsing() {
+        $response = \App\Parser::execute('tests\test_products_xml.xml');
+
+        self::assertEquals('Parsing for XML is planned and shall be done soon.', $response);
+        self::assertFileDoesNotExist('tests\unique-combination-results-xml.csv');
+    }
+
+    /**
      * Returns a CSV in 2D Array.
      * @param $filePath
      * @param $delimiter

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <row>
+        <brand_name>AASTRA</brand_name>
+        <model_name>6865I</model_name>
+        <condition_name>Working</condition_name>
+        <grade_name>Grade B - Good Condition</grade_name>
+        <gb_spec_name>Not Applicable</gb_spec_name>
+        <colour_name>Black</colour_name>
+        <network_name>Not Applicable</network_name>
+    </row>
+    <row>
+        <brand_name>AASTRA</brand_name>
+        <model_name>6865I</model_name>
+        <condition_name>Working</condition_name>
+        <grade_name>Grade B - Good Condition</grade_name>
+        <gb_spec_name>Not Applicable</gb_spec_name>
+        <colour_name>Black</colour_name>
+        <network_name>Not Applicable</network_name>
+    </row>
+    <row>
+        <brand_name>AASTRA</brand_name>
+        <model_name>6865I</model_name>
+        <condition_name>Working</condition_name>
+        <grade_name>Grade B - Good Condition</grade_name>
+        <gb_spec_name>Not Applicable</gb_spec_name>
+        <colour_name>Black</colour_name>
+        <network_name>Not Applicable</network_name>
+    </row>
+</root>
