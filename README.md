@@ -7,8 +7,8 @@ This is an assignment whereby a CSV parser has been created that generates a uni
 | assignment.php |  This is the main file, from where the parser can be executed. |
 | App\Parser.php | This is the sub class file, to initialize the parser execution across multiple formats. |
 | App\CsvParser.php | This is the sub class file, to execute the CSV based parsers with different delimiters. |
-| App\Validations.php | This is sub file which contains various validations for the input file. |
-| App\Memory.php | This is just a helper sub file which has some helper memory related functions. |
+| App\Validations.php | This is sub class file which contains various validations for the input file. |
+| App\Memory.php | This is just a helper sub class file which has some helper memory related functions. |
 
 ## How to(s)
 To execute this project, one needs to install composer first by `composer install` command. 
