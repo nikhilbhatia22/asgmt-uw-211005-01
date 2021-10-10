@@ -19,12 +19,12 @@ class Parser {
                                    $bailValidation = true, $printObjects = false){
         switch (pathinfo($inputFile, PATHINFO_EXTENSION)) {
             case 'json': return "Parsing for JSON is planned and shall be done soon."; break;
-            case 'XML': return "Parsing for XML is planned and shall be done soon."; break;
+            case 'xml': return "Parsing for XML is planned and shall be done soon."; break;
             case 'tsv':
             case 'csv':
-            default:
                 return CsvParser::execute($inputFile, $uniqueCombinationFile, $bailValidation, $printObjects);
                 break;
+            default: return "File format is incorrect.";    break;
         }
     }
 
