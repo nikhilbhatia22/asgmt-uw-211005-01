@@ -7,9 +7,10 @@
 $script_start_time = microtime(true);
 
 //Input Collection
-$inputs = getopt(null,['file:', 'unique-combination::']);
+$inputs = getopt(null,['file:', 'unique-combination::', 'dont-bail']);
 $inputFile = $inputs['file'];
 $uniqueCombinationFile = $inputs['unique-combination'] ?? 'unique-combination-results.csv';
+$bailValidation = isset($inputs['dont-bail']) ? false : true;
 
 
 //Few Argument Validations
@@ -19,12 +20,12 @@ if(!file_exists($inputFile))   throw new InvalidArgumentException("The specified
 
 //Main Script Execution.
 switch (pathinfo($inputFile, PATHINFO_EXTENSION)) {
-    case 'json': echo "Parsing for JSON is planned and shall be done soon."; break; exit;
-    case 'XML': echo "Parsing for XML is planned and shall be done soon."; break; exit;
+    case 'json': echo "Parsing for JSON is planned and shall be done soon."; exit; break;
+    case 'XML': echo "Parsing for XML is planned and shall be done soon."; exit; break;
     case 'tsv':
     case 'csv':
     default:
-        parseCSV($inputFile, $uniqueCombinationFile);
+        parseCSV($inputFile, $uniqueCombinationFile, $bailValidation);
         break;
 }
 
@@ -48,9 +49,10 @@ echo "The results were successfully parsed into $uniqueCombinationFile in " . ro
  * Parses any CSV based file.
  * @param $inputFile
  * @param $uniqueCombinationFile
+ * @param $bailValidation
  * @throws Exception
  */
-function parseCSV($inputFile, $uniqueCombinationFile){
+function parseCSV($inputFile, $uniqueCombinationFile, $bailValidation){
     $fp = fopen($inputFile, "r+");      //Opening the input file.
 
     $indexedData = [];
@@ -75,7 +77,7 @@ function parseCSV($inputFile, $uniqueCombinationFile){
 
         $associativeRowData = array_combine($headingsAsArr, $parsedCsvRow);
 
-        if(!validateRow($associativeRowData, $lineNo))      continue;   //Skipping if the validation of any row fails.
+        if(!validateRow($associativeRowData, $lineNo, $bailValidation))      continue;   //Skipping if the validation of any row fails.
 
         if(! isset($indexedData[$line])){
             $indexedData[$line] = $uniqueArrIndex;
@@ -109,10 +111,11 @@ function parseCSV($inputFile, $uniqueCombinationFile){
  * Validates the given row data
  * @param $rowData
  * @param $lineNo
+ * @param $bailValidation
  * @return bool
  * @throws Exception
  */
-function validateRow($rowData, $lineNo){
+function validateRow($rowData, $lineNo, $bailValidation){
     $rules = [
         'brand_name' => 'required|string',
         'model_name' => 'required|string',
@@ -132,8 +135,10 @@ function validateRow($rowData, $lineNo){
         foreach (explode('|', $rules[$key]) as $rule) {
             $validator = 'validate' . ucfirst($rule);
             if(!$validator($rowDatum)){
-                throw new Exception("At line #$lineNo, " . str_replace('%attribute%', $key, $messages[$rule]) . "\n");
-//                echo "At line #$lineNo, " . str_replace('%attribute%', $key, $messages[$rule]) . "\n";
+                if($bailValidation)
+                    throw new RuntimeException("At line #$lineNo, " . str_replace('%attribute%', $key, $messages[$rule]) . "\n");
+                else
+                    echo "At line #$lineNo, " . str_replace('%attribute%', $key, $messages[$rule]) . "\n";
                 return false;
             }
         }
