@@ -1,7 +1,15 @@
 # Assignment
 This is an assignment whereby a CSV parser has been created for a given assignment-question placed in the directory with the same name.
 
-# How to(s)
+## File Definitions
+| File   |      Remarks      |
+|----------|-------------|
+| assignment.php |  This is the main file, from where the parser can be executed. |
+| csv_parser.php | This is the sub file, to execute the CSV based parsers with different delimiters. |
+| validations.php | This is sub file which contains various validations for the input file. |
+| memory.php | This is just a helper sub file which has some helper memory related functions. |
+
+## How to(s)
 The script in the simplest form can be executed with following command,
 
 `php assignment.php --file path\to\the\file`
