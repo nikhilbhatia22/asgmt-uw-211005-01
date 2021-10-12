@@ -32,7 +32,7 @@ However, the script has a **number of customizations**, which are as follows:
 3. By default, the script **doesn't output the parsed product object** with given properties to be mapped. However, the parsed objects **can be printed** by passing an option `--print-objects`. Example,
 
     `php assignment.php --file sample-input-files\products_comma_separated.csv --print-objects`
-4. Since, the headings in the input file can be changed in the future, it is required the same should be updated in the mapping provided in a file `csv_parser.php` with variable `$mappingAndSequence_ofHeadings`, so that the headings can be easily mapped with required properties of the product.
-5. The **validation rules are customizable** by modifying the array `$rules` in a file `validations.php`.
-6. The **validation messages are customizable** by modifying the array `$messages` in a file `validations.php`.
+4. Since, the headings in the input file can be changed in the future, it is required the same should be updated in the mapping provided in a class `App\CsvParser.php` with variable `$mappingAndSequence_ofHeadings`, so that the headings can be easily mapped with required properties of the product.
+5. The **validation rules are customizable** by modifying the array `$rules` in a class `App\Validations.php`.
+6. The **validation messages are customizable** by modifying the array `$messages` in a class `App\Validations.php`.
 7. The tests can be run by `vendor\bin\phpunit --testdox`.
